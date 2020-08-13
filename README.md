@@ -31,7 +31,7 @@ brew bundle
 
 * Global .gitignore
 ```bash
-mkdir -p ~/.config/git && cp .global-gitignore ~/.config/git/ignore
+git config --global core.excludesfile "$(PWD)/.global-gitignore"
 ```
 
 ## Python env setup

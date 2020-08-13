@@ -1,0 +1,20 @@
+# Node
+npm-debug.log
+nodes_modules/
+webpack-stats.json
+
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# IntelliJ / Pycharm
+.idea/
+.vscode/
+
+# vi
+*~
+
+# pyenv
+.python-version
