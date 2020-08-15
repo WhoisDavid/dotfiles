@@ -37,7 +37,6 @@ zinit wait lucid light-mode for \
     zsh-users/zsh-history-substring-search \
     OMZP::fzf \
     OMZP::command-not-found \
-    OMZP::colored-man-pages \
   as'command' pick'bin/git-fuzzy'	\
     bigH/git-fuzzy
 
@@ -108,6 +107,10 @@ export PATH=$PATH:$SRCPATH/github/flutter/bin
 export PBCAT_PROTO_ROOT=/Users/david/src/github/deal-radar
 export CARGO_TARGET_DIR=/Users/david/.cargo-target
 
+## Misc configs
+# colored man pages
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
 # History
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=10000000
@@ -138,7 +141,7 @@ alias la='exa -abghl --git --color=automatic'
 alias preview="fzf --preview 'bat --color \"always\" {}'"
 # Requires `brew install bat`.
 alias cat='bat'
-alias less='bat --pager "$PAGER $LESS" --style=snip,header --color=always'
+alias less='bat --style=snip,header --color=always'
 # Brew install dua
 alias du="dua interactive" #"ncdu --color dark -rr -x --exclude .git --exclude node_modules"
 __json_cmp(){
