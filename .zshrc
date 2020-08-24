@@ -29,6 +29,7 @@ zinit light-mode for \
 
 ## Load synchronously to avoid alias clash
 zinit light-mode for \
+    OMZL::completion.zsh \
     OMZL::git.zsh \
     OMZP::git
 
@@ -37,12 +38,6 @@ zinit wait lucid light-mode for \
     zsh-users/zsh-history-substring-search \
     OMZP::fzf \
     OMZP::command-not-found \
-  as'command' pick'bin/git-fuzzy'	\
-    bigH/git-fuzzy
-
-export GIT_FUZZY_STATUS_ADD_KEY="Right"
-export GIT_FUZZY_STATUS_RESET_KEY="Left"
-export GIT_FUZZY_STATUS_RESET_KEY="Ctrl-X"
 
 # Fast-syntax-highlighting & autosuggestions
 zinit wait lucid for \
@@ -68,7 +63,8 @@ zinit wait lucid from"gh-r" as"null" for \
      sbin"exa* -> exa"  ogham/exa \
      sbin"**/dua"       Byron/dua-cli \
      sbin"**/rg"        BurntSushi/ripgrep \
-  atload'unalias zi; eval "$(zoxide init zsh)"' \
+     sbin"gitui"        extrawurst/gitui \
+   atload'unalias zi 2>/dev/null; eval "$(zoxide init zsh)"' \
      sbin"zoxide* -> zoxide" ajeetdsouza/zoxide
 
 ## Prompt
