@@ -56,7 +56,7 @@ zinit wait lucid light-mode as"completion" for \
     OMZP::docker-compose
     
 ## Load programs/binaries
-zinit wait lucid from"gh-r" as"null" for \
+zinit wait lucid from"gh-r" as"program" for \
      sbin"fzf"          junegunn/fzf-bin \
      sbin"**/fd"        @sharkdp/fd \
      sbin"**/bat"       @sharkdp/bat \
@@ -65,7 +65,10 @@ zinit wait lucid from"gh-r" as"null" for \
      sbin"**/rg"        BurntSushi/ripgrep \
      sbin"gitui"        extrawurst/gitui \
    atload'unalias zi 2>/dev/null; eval "$(zoxide init zsh)"' \
-     sbin"zoxide* -> zoxide" ajeetdsouza/zoxide
+     sbin"zoxide* -> zoxide" ajeetdsouza/zoxide \
+
+zinit wait lucid from"github" as"program" for \
+    sbin"bin/rm.sh -> safe-rm" kaelzhang/shell-safe-rm
 
 ## Prompt
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -131,26 +134,31 @@ bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
 # Aliases
-alias tedit="open -a Visual\ Studio\ Code"
-alias brewit='brew update && brew upgrade && brew cleanup; brew doctor'
+
+## Aliases for cli-utils
 alias la='exa -abghl --git --color=automatic'
 alias preview="fzf --preview 'bat --color \"always\" {}'"
-# Requires `brew install bat`.
 alias cat='bat'
 alias less='bat --style=snip,header --color=always'
-# Brew install dua
 alias du="dua interactive" #"ncdu --color dark -rr -x --exclude .git --exclude node_modules"
+alias wcl='rg ".*" --count'
+alias rm='safe-rm'
+alias unsafe-rm='\rm'
+### Log file highlighting in `tail`
+_tail() { tail "$@" | bat --paging=never -l log }
+alias tail='\_tail' # \ to avoid recursion
+##
+
+## Misc aliases
+alias tedit="open -a Visual\ Studio\ Code"
+alias brewit='brew update && brew upgrade && brew cleanup; brew doctor'
+alias gst='git status --short --untracked-files=no'
 __json_cmp(){
 jq --argfile a $1 --argfile b $2 -n '($a | walk(if type == "array" then sort else . end)) as $a | ($b | walk(if type == "array" then sort else . end)) as $b | $a == $b'
 }
-alias gst='git status --short --untracked-files=no'
 alias json_cmp='__json_cmp'
 alias vdj='vd -f=jsonl'
-alias wcl='rg ".*" --count'
 alias zshrc='vim ~/.zshrc'
-# Log file highlighting in `tail`
-_tail() { tail "$@" | bat --paging=never -l log }
-alias tail='\_tail' # \ to avoid recursion
 
 # Init jenv
 export PATH="$HOME/.jenv/bin:$PATH"
