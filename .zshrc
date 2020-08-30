@@ -33,6 +33,10 @@ zinit light-mode for \
     OMZL::git.zsh \
     OMZP::git
 
+## Clone fzf for key-bindings and completion scripts for OMZP::fzf
+zinit wait lucid light-mode as"null" for junegunn/fzf
+export FZF_BASE=~/.zinit/plugins/junegunn---fzf
+
 ## Load Oh-My-Zsh plugins
 zinit wait lucid light-mode for \
     zsh-users/zsh-history-substring-search \
@@ -53,8 +57,8 @@ zinit wait lucid light-mode as"completion" for \
     OMZP::pip \
     OMZP::python \
     OMZP::docker/_docker \
-    OMZP::docker-compose
-    
+    OMZP::docker-compose \
+
 ## Load programs/binaries
 zinit wait lucid from"gh-r" as"program" for \
      sbin"fzf"          junegunn/fzf-bin \
@@ -68,7 +72,7 @@ zinit wait lucid from"gh-r" as"program" for \
      sbin"zoxide* -> zoxide" ajeetdsouza/zoxide \
 
 zinit wait lucid from"github" as"program" for \
-    sbin"bin/rm.sh -> safe-rm" kaelzhang/shell-safe-rm
+    sbin"bin/rm.sh -> safe-rm" kaelzhang/shell-safe-rm \
 
 ## Prompt
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -162,7 +166,7 @@ alias zshrc='vim ~/.zshrc'
 
 # Init jenv
 export PATH="$HOME/.jenv/bin:$PATH"
-eval "$(jenv init -)"
+if which jenv > /dev/null; then eval "$(jenv init -)"; fi
 
 # Init pyenv-virtualenv
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
