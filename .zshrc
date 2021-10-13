@@ -64,12 +64,12 @@ zinit wait lucid from"gh-r" as"program" for \
      sbin"fzf"          junegunn/fzf-bin \
      sbin"**/fd"        @sharkdp/fd \
      sbin"**/bat"       @sharkdp/bat \
-     sbin"exa* -> exa"  ogham/exa \
+     sbin"**/exa"       ogham/exa \
      sbin"**/dua"       Byron/dua-cli \
      sbin"**/rg"        BurntSushi/ripgrep \
      sbin"gitui"        extrawurst/gitui \
    atload'unalias zi 2>/dev/null; eval "$(zoxide init zsh)"' \
-     sbin"zoxide* -> zoxide" ajeetdsouza/zoxide \
+     sbin"**/zoxide"    ajeetdsouza/zoxide \
 
 zinit wait lucid from"github" as"program" for \
     sbin"bin/rm.sh -> safe-rm" kaelzhang/shell-safe-rm \

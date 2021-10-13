@@ -12,6 +12,11 @@ Enable Filevault + Firewall
 
 See [`.zshrc`](.zshrc).
 
+## Symlink all dotfiles to HOME dir
+```bash
+ln -s $(pwd)/.*(.) ~/
+```
+
 ## Brew
 Install brew
 ```bash
