@@ -42,6 +42,7 @@ zinit wait lucid light-mode for \
     zsh-users/zsh-history-substring-search \
     OMZP::fzf \
     OMZP::command-not-found \
+    lukechilds/zsh-nvm
 
 # Fast-syntax-highlighting & autosuggestions
 zinit wait lucid for \
