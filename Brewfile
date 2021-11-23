@@ -37,7 +37,6 @@ brew "protobuf"
 brew "pv"
 brew "pyenv"
 brew "pyenv-virtualenv"
-brew "python@2", link: false
 brew "python@3.9"
 brew "rename"
 brew "sd"

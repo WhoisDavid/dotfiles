@@ -33,14 +33,14 @@ zinit light-mode for \
     OMZL::git.zsh \
     OMZP::git
 
-## Clone fzf for key-bindings and completion scripts for OMZP::fzf
-zinit wait lucid light-mode as"null" for junegunn/fzf
-export FZF_BASE=~/.zinit/plugins/junegunn---fzf
+# Helper
+command_exists () {
+     command -v $1 >/dev/null 2>&1; 
+}
 
 ## Load Oh-My-Zsh plugins
 zinit wait lucid light-mode for \
     zsh-users/zsh-history-substring-search \
-    OMZP::fzf \
     OMZP::command-not-found \
     lukechilds/zsh-nvm
 
@@ -60,31 +60,26 @@ zinit wait lucid light-mode as"completion" for \
     OMZP::docker/_docker \
     OMZP::docker-compose \
 
-## Load programs/binaries
+## Load programs/binaries from packages
+zinit pack=binary+keys for fzf
 arch="$(uname -m)"
 if [ "${arch}" = x86_64 ]; then
-    echo "Running on Intel/Rosetta"
+    # Running on Intel/Rosetta"
     zinit wait lucid from"gh-r" as"program" for \
-        sbin"fzf"          junegunn/fzf-bin \
         sbin"**/fd"        @sharkdp/fd \
         sbin"**/bat"       @sharkdp/bat \
         sbin"**/exa"       ogham/exa \
         sbin"**/dua"       Byron/dua-cli \
         sbin"**/rg"        BurntSushi/ripgrep \
-        sbin"gitui"        extrawurst/gitui \
     atload'unalias zi 2>/dev/null; eval "$(zoxide init zsh)"' \
-        sbin"**/zoxide"    ajeetdsouza/zoxide
+        sbin"**/zoxide"    ajeetdsouza/zoxide \
+
 elif [ "${arch}" = arm64 ]; then
-    echo "Running on ARM"
+    # Running on ARM
     zinit wait lucid from"gh-r" as"program" for \
-        sbin"fzf"       bpick"*darwin_arm64*"  junegunn/fzf-bin \
-        # sbin"**/fd"        @sharkdp/fd \
-        # sbin"**/bat"       @sharkdp/bat \
-        # sbin"**/exa"       ogham/exa \
-        # sbin"**/dua"       Byron/dua-cli \
-        # sbin"**/rg"        BurntSushi/ripgrep \
     atload'unalias zi 2>/dev/null; eval "$(zoxide init zsh)"' \
-        sbin"**/zoxide"  bpick"*aarch64-apple-darwin*" ajeetdsouza/zoxide
+        sbin"**/zoxide"  bpick"*aarch64-apple-darwin*" ajeetdsouza/zoxide \
+
 fi
 
 zinit wait lucid from"github" as"program" for \
@@ -156,11 +151,18 @@ bindkey '^[[B' history-substring-search-down
 # Aliases
 
 ## Aliases for cli-utils
-alias la='exa -abghl --git --color=automatic'
-alias preview="fzf --preview 'bat --color \"always\" {}'"
-alias cat='bat'
-alias less='bat --style=snip,header --color=always'
-alias du="dua interactive" #"ncdu --color dark -rr -x --exclude .git --exclude node_modules"
+if command_exists exa; then
+    alias la='exa -abghl --git --color=automatic'
+fi
+
+if command_exists bat; then
+    alias preview="fzf --preview 'bat --color \"always\" {}'"
+    alias cat='bat'
+    alias less='bat --style=snip,header --color=always'
+fi
+if command_exists dua; then
+    alias du="dua interactive"
+fi
 alias wcl='rg ".*" --count'
 alias rm='safe-rm'
 alias unsafe-rm='\rm'
@@ -170,7 +172,7 @@ alias tail='\_tail' # \ to avoid recursion
 ##
 
 ## Misc aliases
-alias tedit="open -a Visual\ Studio\ Code"
+alias tedit="codium"
 alias brewit='brew update && brew upgrade && brew cleanup; brew doctor'
 alias gst='git status --short --untracked-files=no'
 __json_cmp(){
