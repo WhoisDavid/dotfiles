@@ -62,7 +62,7 @@ zinit wait lucid light-mode as"completion" for \
 
 ## Load programs/binaries
 arch="$(uname -m)"
-if [ "${arch}" = "x86_64" ]; then
+if [ "${arch}" = x86_64 ]; then
     echo "Running on Intel/Rosetta"
     zinit wait lucid from"gh-r" as"program" for \
         sbin"fzf"          junegunn/fzf-bin \
@@ -73,8 +73,8 @@ if [ "${arch}" = "x86_64" ]; then
         sbin"**/rg"        BurntSushi/ripgrep \
         sbin"gitui"        extrawurst/gitui \
     atload'unalias zi 2>/dev/null; eval "$(zoxide init zsh)"' \
-        sbin"**/zoxide"    ajeetdsouza/zoxide \
-elif [ "${arch}" = "arm64" ]; then 
+        sbin"**/zoxide"    ajeetdsouza/zoxide
+elif [ "${arch}" = arm64 ]; then
     echo "Running on ARM"
     zinit wait lucid from"gh-r" as"program" for \
         sbin"fzf"       bpick"*darwin_arm64*"  junegunn/fzf-bin \
@@ -84,7 +84,7 @@ elif [ "${arch}" = "arm64" ]; then
         # sbin"**/dua"       Byron/dua-cli \
         # sbin"**/rg"        BurntSushi/ripgrep \
     atload'unalias zi 2>/dev/null; eval "$(zoxide init zsh)"' \
-        sbin"**/zoxide"  bpick"*aarch64-apple-darwin*" ajeetdsouza/zoxide \
+        sbin"**/zoxide"  bpick"*aarch64-apple-darwin*" ajeetdsouza/zoxide
 fi
 
 zinit wait lucid from"github" as"program" for \
