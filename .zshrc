@@ -7,7 +7,7 @@ fi
 
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
-    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+    print -P "%F{33}▓▒░ %F{220}Installing Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
     command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
     command git clone https://github.com/zdharma-continuum/zinit "$HOME/.zinit/bin" && \
         print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
@@ -61,16 +61,31 @@ zinit wait lucid light-mode as"completion" for \
     OMZP::docker-compose \
 
 ## Load programs/binaries
-zinit wait lucid from"gh-r" as"program" for \
-     sbin"fzf"          junegunn/fzf-bin \
-     sbin"**/fd"        @sharkdp/fd \
-     sbin"**/bat"       @sharkdp/bat \
-     sbin"**/exa"       ogham/exa \
-     sbin"**/dua"       Byron/dua-cli \
-     sbin"**/rg"        BurntSushi/ripgrep \
-     sbin"gitui"        extrawurst/gitui \
-   atload'unalias zi 2>/dev/null; eval "$(zoxide init zsh)"' \
-     sbin"**/zoxide"    ajeetdsouza/zoxide \
+arch="$(uname -m)"
+if [ "${arch}" = "x86_64" ]; then
+    echo "Running on Intel/Rosetta"
+    zinit wait lucid from"gh-r" as"program" for \
+        sbin"fzf"          junegunn/fzf-bin \
+        sbin"**/fd"        @sharkdp/fd \
+        sbin"**/bat"       @sharkdp/bat \
+        sbin"**/exa"       ogham/exa \
+        sbin"**/dua"       Byron/dua-cli \
+        sbin"**/rg"        BurntSushi/ripgrep \
+        sbin"gitui"        extrawurst/gitui \
+    atload'unalias zi 2>/dev/null; eval "$(zoxide init zsh)"' \
+        sbin"**/zoxide"    ajeetdsouza/zoxide \
+elif [ "${arch}" = "arm64" ]; then 
+    echo "Running on ARM"
+    zinit wait lucid from"gh-r" as"program" for \
+        sbin"fzf"       bpick"*darwin_arm64*"  junegunn/fzf-bin \
+        # sbin"**/fd"        @sharkdp/fd \
+        # sbin"**/bat"       @sharkdp/bat \
+        # sbin"**/exa"       ogham/exa \
+        # sbin"**/dua"       Byron/dua-cli \
+        # sbin"**/rg"        BurntSushi/ripgrep \
+    atload'unalias zi 2>/dev/null; eval "$(zoxide init zsh)"' \
+        sbin"**/zoxide"  bpick"*aarch64-apple-darwin*" ajeetdsouza/zoxide \
+fi
 
 zinit wait lucid from"github" as"program" for \
     sbin"bin/rm.sh -> safe-rm" kaelzhang/shell-safe-rm \
