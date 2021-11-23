@@ -105,7 +105,7 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 # Update $PATH.
-export PATH=$PATH:$HOME/src/scripts:/usr/local/bin:/usr/local/sbin:~/bin:/usr/local/opt/python/libexec/bin
+export PATH=$PATH:$HOME/src/scripts:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/local/sbin:~/bin:/usr/local/opt/python/libexec/bin
 export SRCPATH=/Users/david/src
 
 # Python config
