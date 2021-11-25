@@ -58,6 +58,7 @@ yabai -m rule --add app="Alfred Preferences" manage=off
 yabai -m rule --add app=VLC manage=off border=off
 yabai -m rule --add app=DeepL manage=off
 yabai -m rule --add app=IINA manage=off
+yabai -m rule --add app=WireGuard manage=off
 yabai -m rule --add app=Firefox title="^Opening" manage=off # Firefox download
 
 echo "yabai config loaded"
