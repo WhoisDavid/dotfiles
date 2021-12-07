@@ -42,7 +42,7 @@ command_exists () {
 zinit wait lucid light-mode for \
     zsh-users/zsh-history-substring-search \
     OMZP::command-not-found \
-    lukechilds/zsh-nvm
+    lukechilds/zsh-nvm \
 
 # Fast-syntax-highlighting & autosuggestions
 zinit wait lucid for \
@@ -84,6 +84,9 @@ fi
 
 zinit wait lucid from"github" as"program" for \
     sbin"bin/rm.sh -> safe-rm" kaelzhang/shell-safe-rm \
+    
+zinit wait lucid light-mode for \
+    Aloxaf/fzf-tab
 
 ## Prompt
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -100,7 +103,7 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 # Update $PATH.
-export PATH=$PATH:$HOME/src/scripts:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/local/sbin:~/bin:/usr/local/opt/python/libexec/bin
+export PATH=$HOME/src/scripts:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/local/sbin:~/bin:/usr/local/opt/python/libexec/bin:$PATH
 export SRCPATH=/Users/david/src
 
 # Python config
