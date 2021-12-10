@@ -112,7 +112,7 @@ shift + alt - 0 : yabai -m space --balance
 lctrl + alt - g : yabai -m space --toggle padding; yabai -m space --toggle gap
 
 # Toggle split mode (vertical/horizontal)
-alt - s : yabai -m window --toggle split
+shift + alt - s : yabai -m window --toggle split
 
 # Rotate managed windows clockwise and anticlockwise
 alt - r         : yabai -m space --rotate 270
