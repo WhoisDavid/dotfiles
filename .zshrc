@@ -61,7 +61,6 @@ zinit wait lucid light-mode as"completion" for \
     OMZP::docker-compose \
 
 ## Load programs/binaries from packages
-zinit pack=binary+keys for fzf
 arch="$(uname -m)"
 if [ "${arch}" = x86_64 ]; then
     # Running on Intel/Rosetta"
@@ -70,23 +69,23 @@ if [ "${arch}" = x86_64 ]; then
         sbin"**/bat"       @sharkdp/bat \
         sbin"**/exa"       ogham/exa \
         sbin"**/dua"       Byron/dua-cli \
-        sbin"**/rg"        BurntSushi/ripgrep \
-    atload'unalias zi 2>/dev/null; eval "$(zoxide init zsh)"' \
-        sbin"**/zoxide"    ajeetdsouza/zoxide \
-
-elif [ "${arch}" = arm64 ]; then
-    # Running on ARM
-    zinit wait lucid from"gh-r" as"program" for \
-    atload'unalias zi 2>/dev/null; eval "$(zoxide init zsh)"' \
-        sbin"**/zoxide"  bpick"*aarch64-apple-darwin*" ajeetdsouza/zoxide \
-
+        sbin"**/rg"        BurntSushi/ripgrep 
 fi
 
-zinit wait lucid from"github" as"program" for \
-    sbin"bin/rm.sh -> safe-rm" kaelzhang/shell-safe-rm \
+zinit wait lucid from"gh-r" as"program" for \
+    sbin"fzf"                  junegunn/fzf \
+atload'unalias zi 2>/dev/null; eval "$(zoxide init zsh)"' \
+    sbin"**/zoxide"    ajeetdsouza/zoxide 
+
+zinit for \
+    https://github.com/junegunn/fzf/raw/master/shell/{'completion','key-bindings'}.zsh
     
 zinit wait lucid light-mode for \
     Aloxaf/fzf-tab
+
+## Load from cloning repo
+zinit wait lucid from"github" as"program" for \
+    sbin"bin/rm.sh -> safe-rm" kaelzhang/shell-safe-rm
 
 ## Prompt
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -113,7 +112,7 @@ export PYTHONPATH=$SRCPATH/github
 # Go config
 export GOPATH=$HOME/golang
 export GOBIN=$GOPATH/bin
-export GOROOT=/usr/local/opt/go/libexec
+export GOROOT=/opt/homebrew/bin/go
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOROOT/bin
 
@@ -178,10 +177,10 @@ alias tail='\_tail' # \ to avoid recursion
 alias tedit="codium"
 alias brewit='brew update && brew upgrade && brew cleanup; brew doctor'
 alias gst='git status --short --untracked-files=no'
-__json_cmp(){
-jq --argfile a $1 --argfile b $2 -n '($a | walk(if type == "array" then sort else . end)) as $a | ($b | walk(if type == "array" then sort else . end)) as $b | $a == $b'
-}
-alias json_cmp='__json_cmp'
+#__json_cmp(){
+#jq --argfile a $1 --argfile b $2 -n '($a | walk(if type == "array" then sort else . end)) as $a | ($b | walk(if type == "array" then sort else . end)) as $b | $a == $b'
+#}
+#alias json_cmp='__json_cmp'
 alias vdj='vd -f=jsonl'
 alias zshrc='vim ~/.zshrc'
 
