@@ -60,5 +60,6 @@ yabai -m rule --add app=DeepL manage=off
 yabai -m rule --add app=IINA manage=off
 yabai -m rule --add app=WireGuard manage=off
 yabai -m rule --add app=Firefox title="^Opening" manage=off # Firefox download
+yabai -m rule --add app=Pritunl manage=off
 
 echo "yabai config loaded"
