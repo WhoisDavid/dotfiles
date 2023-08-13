@@ -96,7 +96,9 @@ setopt hist_beep                 # Beep when accessing nonexistent history.
 
 # Key-bindings
 bindkey '^[[A' history-substring-search-up
+bindkey '^[OA' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
+bindkey '^[OB' history-substring-search-down
 
 # Helper
 command_exists () {
