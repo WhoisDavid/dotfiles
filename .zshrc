@@ -5,92 +5,43 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-### Added by Zinit's installer
-if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
-    print -P "%F{33}▓▒░ %F{220}Installing Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
-    command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
-    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.zinit/bin" && \
-        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
-        print -P "%F{160}▓▒░ The clone has failed.%f%b"
+## Setup Zim
+ZIM_HOME=~/.zim
+
+## Download zimfw plugin manager if missing.
+if [[ ! -e ${ZIM_HOME}/zimfw.zsh ]]; then
+  if (( ${+commands[curl]} )); then
+    curl -fsSL --create-dirs -o ${ZIM_HOME}/zimfw.zsh \
+        https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
+  else
+    mkdir -p ${ZIM_HOME} && wget -nv -O ${ZIM_HOME}/zimfw.zsh \
+        https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
+  fi
 fi
 
-source "$HOME/.zinit/bin/zinit.zsh"
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
-### End of Zinit's installer chunk
-
-# Load a few important annexes, without Turbo
-# (this is currently required for annexes)
-zinit light-mode for \
-    zdharma-continuum/z-a-rust \
-    zdharma-continuum/z-a-as-monitor \
-    zdharma-continuum/z-a-patch-dl \
-    zdharma-continuum/z-a-bin-gem-node
-
-## Load synchronously to avoid alias clash
-zinit light-mode for \
-    OMZL::completion.zsh \
-    OMZL::git.zsh \
-    OMZP::git
-
-# Helper
-command_exists () {
-     command -v $1 >/dev/null 2>&1; 
-}
-
-## Load Oh-My-Zsh plugins
-zinit wait lucid light-mode for \
-    zsh-users/zsh-history-substring-search \
-    OMZP::command-not-found \
-    lukechilds/zsh-nvm \
-
-# Fast-syntax-highlighting & autosuggestions
-zinit wait lucid for \
- atinit"ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zpcdreplay" \
-    zdharma-continuum/fast-syntax-highlighting \
- atload"!_zsh_autosuggest_start" \
-    zsh-users/zsh-autosuggestions \
- blockf \
-    zsh-users/zsh-completions
-
-zinit wait lucid light-mode as"completion" for \
-    OMZP::brew \
-    OMZP::pip \
-    OMZP::python \
-    OMZP::docker/_docker \
-    OMZP::docker-compose \
-
-## Load programs/binaries from packages
-zinit pack=binary+keys for fzf
-arch="$(uname -m)"
-if [ "${arch}" = x86_64 ]; then
-    # Running on Intel/Rosetta"
-    zinit wait lucid from"gh-r" as"program" for \
-        sbin"**/fd"        @sharkdp/fd \
-        sbin"**/bat"       @sharkdp/bat \
-        sbin"**/exa"       ogham/exa \
-        sbin"**/dua"       Byron/dua-cli \
-        sbin"**/rg"        BurntSushi/ripgrep \
-    atload'unalias zi 2>/dev/null; eval "$(zoxide init zsh)"' \
-        sbin"**/zoxide"    ajeetdsouza/zoxide \
-
-elif [ "${arch}" = arm64 ]; then
-    # Running on ARM
-    zinit wait lucid from"gh-r" as"program" for \
-    atload'unalias zi 2>/dev/null; eval "$(zoxide init zsh)"' \
-        sbin"**/zoxide"  bpick"*aarch64-apple-darwin*" ajeetdsouza/zoxide \
-
+## Install missing modules, and update ${ZIM_HOME}/init.zsh if missing or outdated.
+if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZDOTDIR:-${HOME}}/.zimrc ]]; then
+  source ${ZIM_HOME}/zimfw.zsh init -q
 fi
 
-zinit wait lucid from"github" as"program" for \
-    sbin"bin/rm.sh -> safe-rm" kaelzhang/shell-safe-rm \
-    
-zinit wait lucid light-mode for \
-    Aloxaf/fzf-tab
+## Initialize modules.
+source ${ZIM_HOME}/init.zsh
+
+# Config fzf-tab
+zstyle -d ':completion:*' format # rm old format
+# disable sort when completing `git checkout`
+zstyle ':completion:*:git-checkout:*' sort false
+# set descriptions format to enable group support
+zstyle ':completion:*:descriptions' format '[%d]'
+# set list-colors to enable filename colorizing
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# preview directory's content with exa when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+# switch group using `,` and `.`
+zstyle ':fzf-tab:*' switch-group ',' '.'
 
 ## Prompt
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-zinit ice depth=1; zinit light romkatv/powerlevel10k
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # ZSH flags
@@ -103,7 +54,7 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 # Update $PATH.
-export PATH=$HOME/src/scripts:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/local/sbin:~/bin:/usr/local/opt/python/libexec/bin:$PATH
+export PATH=$HOME/src/scripts:/opt/homebrew/bin:/opt/homebrew/sbin:/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin:/usr/local/bin:/usr/local/sbin:~/bin:/usr/local/opt/python/libexec/bin:$PATH
 export SRCPATH=/Users/david/src
 
 # Python config
@@ -111,11 +62,7 @@ alias python='python3'
 export PYTHONPATH=$SRCPATH/github
 
 # Go config
-export GOPATH=$HOME/golang
-export GOBIN=$GOPATH/bin
-export GOROOT=/usr/local/opt/go/libexec
-export PATH=$PATH:$GOPATH/bin
-export PATH=$PATH:$GOROOT/bin
+export PATH="$PATH:$(go env GOPATH)/bin"
 
 # Android, Flutter config
 export PATH=$PATH:$SRCPATH/github/flutter/bin
@@ -149,7 +96,14 @@ setopt hist_beep                 # Beep when accessing nonexistent history.
 
 # Key-bindings
 bindkey '^[[A' history-substring-search-up
+bindkey '^[OA' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
+bindkey '^[OB' history-substring-search-down
+
+# Helper
+command_exists () {
+     command -v $1 >/dev/null 2>&1; 
+}
 
 # Aliases
 
@@ -175,13 +129,13 @@ alias tail='\_tail' # \ to avoid recursion
 ##
 
 ## Misc aliases
-alias tedit="codium"
+alias tedit="code"
 alias brewit='brew update && brew upgrade && brew cleanup; brew doctor'
 alias gst='git status --short --untracked-files=no'
-__json_cmp(){
-jq --argfile a $1 --argfile b $2 -n '($a | walk(if type == "array" then sort else . end)) as $a | ($b | walk(if type == "array" then sort else . end)) as $b | $a == $b'
-}
-alias json_cmp='__json_cmp'
+#__json_cmp(){
+#jq --argfile a $1 --argfile b $2 -n '($a | walk(if type == "array" then sort else . end)) as $a | ($b | walk(if type == "array" then sort else . end)) as $b | $a == $b'
+#}
+#alias json_cmp='__json_cmp'
 alias vdj='vd -f=jsonl'
 alias zshrc='vim ~/.zshrc'
 
@@ -190,7 +144,17 @@ export PATH="$HOME/.jenv/bin:$PATH"
 if which jenv > /dev/null; then eval "$(jenv init -)"; fi
 
 # Init pyenv-virtualenv
-if which pyenv > /dev/null; then eval "$(pyenv init --path)"; eval "$(pyenv init -)"; fi
-if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
+if which pyenv > /dev/null; then eval "$(pyenv init --path)"; eval "$(pyenv init - --no-rehash)"; fi
+if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init - | sed s/precmd/chpwd/g)"; fi
 
 export PATH=/Users/david/.local/bin:$PATH
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+# Misc Kubectl cfg
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+
+# Init Zoxide
+eval "$(zoxide init zsh)"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
